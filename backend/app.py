@@ -1,7 +1,9 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,jsonify
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI']='postgresql://postgres:19990521a@localhost:5432/nameInfo'
 db=SQLAlchemy(app)
@@ -16,27 +18,26 @@ class Student(db.Model):
     db.create_all()
     self.fname=fname
     self.lname=lname
+  def to_dict(self):
+    return {
+        'fname': self.fname,
+        'lname': self.lname
+    }
 
-
-@app.route("/")
-def index():
-    return render_template('index.html')
-
-@app.route('/submit', methods=['POST'])
+@app.route('/', methods=['POST'])
 def submit():
-  fname= request.form['fname']
-  lname=request.form['lname']
-
+  data = request.get_json()
+  fname = data['fname']
+  lname = data['lname']
   student=Student(fname,lname)
-
   db.session.add(student)
   db.session.commit()
-  return render_template('success.html', data=fname)
+  return jsonify({"message": "success post"}),200
 
-@app.route('/students', methods=['GET'])
+@app.route('/', methods=['GET'])
 def students():
     all_students = Student.query.all()
-    return render_template('students.html', students=all_students)
+    return jsonify([student.to_dict() for student in all_students]), 200
 
 if __name__ == '__main__':
     app.run(debug=True,port=5001)
