@@ -31,8 +31,12 @@ def submit():
 
   db.session.add(student)
   db.session.commit()
-
   return render_template('success.html', data=fname)
 
+@app.route('/students', methods=['GET'])
+def students():
+    all_students = Student.query.all()
+    return render_template('students.html', students=all_students)
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True,port=5001)
