@@ -16,8 +16,11 @@ COPY . .
 # Build the React frontend
 RUN npm run build
 
+# https://github.com/facebook/create-react-app/issues/11779
+ENV WDS_SOCKET_PORT=0 
+
 # Set the environment variable for the base URL of the backend
-ENV REACT_APP_BASE_URL=http://172.19.0.3:5000/
+ENV REACT_APP_BASE_URL=http://172.19.0.2:5000/
 
 # Start the frontend
 CMD ["npm", "start","--host=0.0.0.0"]
