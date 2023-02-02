@@ -11,5 +11,7 @@ RUN pip install -r requirements.txt
 # Set environment variables for the connection string
 ENV DATABASE_URL postgresql://postgres:19990521a@db:5432/nameInfo
 
+EXPOSE 5000
+
 # Start the backend server
 CMD ["flask", "run", "--host=0.0.0.0"]

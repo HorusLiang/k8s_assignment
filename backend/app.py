@@ -1,10 +1,12 @@
-from flask import Flask, render_template,request,jsonify
+from flask import Flask, render_template,request,jsonify,send_from_directory
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 import os
 
 app = Flask(__name__)
 CORS(app)
+
+
 
 app.config['SQLALCHEMY_DATABASE_URI']=os.environ.get('DATABASE_URL', 'postgresql://postgres:19990521a@localhost:5432/nameInfo')
 db=SQLAlchemy(app)
@@ -24,6 +26,8 @@ class Student(db.Model):
         'fname': self.fname,
         'lname': self.lname
     }
+
+
 
 @app.route('/', methods=['POST'])
 def submit():

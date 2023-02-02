@@ -15,6 +15,7 @@ const App=()=> {
 
   const handleSend=async(event)=>{
     event.preventDefault()
+    console.log("----"+process.env.REACT_APP_BASE_URL)
     const formData = new FormData(event.target)
     const fname = formData.get("fname");
     const lname = formData.get("lname");
